@@ -1,0 +1,41 @@
+digraph G { 
+node [style=filled, fillcolor=plum1 ,shape=rectangle, fontsize=20, color=black];
+edge [fontsize=10, color=blue4, fontcolor=blue4];
+
+Legalese [style=filled, fillcolor=floralwhite ,fontsize=20,color=black,label="{Ingestion|(c) 2014 Intersys Consulting}", shape=record];
+
+RawRecords [style=filled, fillcolor=mintcream ,fontsize=12,color=black,label="{Stream: RawRecords|{RawRecord|{originalRecord}}}", shape=record];
+ArchiveCopies [style=filled, fillcolor=mintcream ,fontsize=12,color=black,label="{Stream: ArchiveCopies|{RawRecord|{originalRecord}}}", shape=record];
+Errors [style=filled, fillcolor=mintcream ,fontsize=12,color=black,label="{Stream: Errors|{ParseError|{originalReord|message}}}", shape=record];
+Accounts [style=filled, fillcolor=mintcream ,fontsize=12,color=black,label="{Stream: Accounts|{Account|{id}}}", shape=record];
+Events [style=filled, fillcolor=mintcream ,fontsize=12,color=black,label="{Stream: Events|{Event|{id|time|type|json}}}", shape=record];
+NewAccounts [style=filled, fillcolor=mintcream ,fontsize=12,color=black,label="{Stream: NewAccounts|{Account|{id}}}", shape=record];
+"Kafka Reader (1)"  [shape=invhouse] ;
+"Archival (1)"  [shape=ellipse, fillcolor=palegoldenrod] ;
+"Record Parser (8)"  [shape=ellipse, fillcolor=palegoldenrod] ;
+"Error Log (1)"  [shape=ellipse, fillcolor=palegoldenrod] ;
+"Account (2)"  [shape=ellipse, fillcolor=palegoldenrod] ;
+"New Account Processor (1)"  [shape=ellipse, fillcolor=palegoldenrod] ;
+"Event Processor (1)"  [shape=ellipse, fillcolor=palegoldenrod] ;
+
+"Kafka Reader (1)" -> RawRecords  [penwidth=10];
+"Kafka Reader (1)" -> ArchiveCopies  [penwidth=10];
+"Record Parser (8)" -> Errors  [penwidth=10];
+"Record Parser (8)" -> Accounts  [penwidth=10];
+"Record Parser (8)" -> Events  [penwidth=10];
+"Account (2)" -> NewAccounts  [penwidth=10];
+
+ArchiveCopies -> "Archival (1)"  [penwidth=8, label="    grouping: shuffle"];
+RawRecords -> "Record Parser (8)"  [penwidth=8, label="    grouping: shuffle"];
+Errors -> "Error Log (1)"  [penwidth=8, label="    grouping: shuffle"];
+Accounts -> "Account (2)"  [penwidth=8, label="    grouping: fields(id)"];
+NewAccounts -> "New Account Processor (1)"  [penwidth=8, label="    grouping: shuffle"];
+Events -> "Event Processor (1)"  [penwidth=8, label="    grouping: shuffle"];
+
+Legalese -> "Kafka Reader (1)" [style=invis, len=30]
+
+}
+
+
+
+

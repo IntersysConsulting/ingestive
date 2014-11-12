@@ -1,0 +1,38 @@
+<html>
+<head>
+	<script src="js/jquery.min.js" ></script>
+	<script src="js/Chart.min.js" ></script>
+	<script src="js/gerken.storm.monitor.js" ></script>
+	
+	<script type="text/javascript">
+ 
+ 		var metricsSourceURL = "http://localhost:8085/";
+ 	
+ 		// Default Storm monitoring provides one metrics group ("Backlog") which has a metric for each stream in the topology.
+ 		
+ 		var monitorConfig = {
+ 			title: "Storm Topology Monitor" ,
+ 			widgets: [
+ 				{ title: "Stream Backlogs", 	id: "backlogs", 		kind: "hist",   	x: 10,  y: 30,  width: 1150, height: 250, metricGroup: "Backlog" } ,
+ 				{ title: "Backlogs SoV",		id: "BlogsSOV", 		kind: "metricsov", 	x: 1200, y: 30, width:  250, height: 250, metricGroup: "Backlog"} ,
+
+ 				{ title: "ArchiveCopies",			id: "BacklogArchiveCopies", 		kind: "tasksov", x: 10, y: 630, width:  300, height: 250, metricGroup: "Backlog", metric: "ArchiveCopies" } ,
+ 				{ title: "RawRecords",			id: "BacklogRawRecords", 		kind: "tasksov", x: 320, y: 630, width:  300, height: 250, metricGroup: "Backlog", metric: "RawRecords" } ,
+ 				{ title: "Errors",			id: "BacklogErrors", 		kind: "tasksov", x: 630, y: 630, width:  300, height: 250, metricGroup: "Backlog", metric: "Errors" } ,
+ 				{ title: "Accounts",			id: "BacklogAccounts", 		kind: "tasksov", x: 940, y: 630, width:  300, height: 250, metricGroup: "Backlog", metric: "Accounts" } ,
+ 				{ title: "NewAccounts",			id: "BacklogNewAccounts", 		kind: "tasksov", x: 1250, y: 630, width:  300, height: 250, metricGroup: "Backlog", metric: "NewAccounts" } ,
+ 				{ title: "Events",			id: "BacklogEvents", 		kind: "tasksov", x: 1560, y: 630, width:  300, height: 250, metricGroup: "Backlog", metric: "Events" } ,
+
+ 				{ title: "Streams", 			id: "legend", 			kind: "legend", 	x: 10, 		y: 330, width:  500, height: 250, metricGroup: "Backlog" } ,
+ 				{ title: "Hotspots", 		    id: "hotspots", 	    kind: "hotspot",  	x: 510,  	y: 330, width: 	570, height: 600  } 
+ 				]
+ 		};
+ 
+ 		$( document ).ready(function() { monitorStorm(); });		
+
+	</script>
+</head>
+<body>
+<div id="storm-monitor" height="1000" width="1500"></div>
+</body>
+</html>

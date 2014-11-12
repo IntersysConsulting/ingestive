@@ -1,0 +1,1 @@
+java -cp target/ingestion-storm-1.0.0-SNAPSHOT-jar-with-dependencies.jar -Djava.util.logging.config.file=src/main/resources/logging.properties com.intersys.topology.IngestionTopology 
