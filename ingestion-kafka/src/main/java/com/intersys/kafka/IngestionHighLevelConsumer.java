@@ -82,6 +82,7 @@ public class IngestionHighLevelConsumer
 	  props.put("auto.commit.interval.ms", "1000");
 	  props.put("socket.timeout.ms", "10000");
 	  props.put("consumer.timeout.ms", "1000");
+	  props.put("auto.offset.reset", "smallest");
 	  return new ConsumerConfig(props);
   }
 
