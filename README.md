@@ -1,7 +1,7 @@
 ingestive
 =========
 
-An example of how to use Kafka and Storm to ingest events illustrating a number of Kafka and Storm design patterns:
+An example of how to use Kafka and Storm to ingest events.  Illustrates a number of Kafka and Storm design patterns:
 
 1) Formal Kafka tier that hides topic implementation and configuration details from collaborating components
 
