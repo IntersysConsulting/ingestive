@@ -8,6 +8,7 @@ import java.util.Map;
 
 import backtype.storm.task.TopologyContext;
 
+import com.intersys.accounts.DeDuper;
 import com.intersys.bean.Account;
 import com.intersys.bolt.IAccountBolt;
 import com.intersys.topology.IngestionTopology;
@@ -19,11 +20,11 @@ public class AccountBoltLogic implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 		
+	private DeDuper deDuper;
+	
 		// Begin declarations 
 
     private static final IIngestionLogger log = IngestionTopology.getLogger();
-
-    private HashSet<String> accounts;
     
 		// End declarations 
 		
@@ -32,10 +33,10 @@ public class AccountBoltLogic implements Serializable {
 			// Begin readFromAccounts() logic 
 
     	String id = account.getId();
-    	if (!accounts.contains(id)) {
+    	
+    	if (deDuper.isNewAccountId(id)) {
     		bolt.emitToNewAccountsWithoutAnchor(account);
     	}
-    	accounts.add(id);
 
 			// End readFromAccounts() logic 
 
@@ -45,7 +46,7 @@ public class AccountBoltLogic implements Serializable {
 
 			// Begin prepare() logic 
 
-    	accounts = new HashSet<String>();
+    	deDuper = new DeDuper();
 
 			// End prepare() logic 
 
