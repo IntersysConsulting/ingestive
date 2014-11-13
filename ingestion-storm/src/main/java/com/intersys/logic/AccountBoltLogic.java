@@ -2,20 +2,16 @@ package com.intersys.logic;
 
 	// Begin imports 
 
-import com.intersys.bean.*;
-import com.intersys.bolt.IAccountBolt;
-import com.intersys.topology.IngestionTopology;
-import com.intersys.util.IngestionLogger;
-import com.intersys.util.IIngestionLogger;
-
-import backtype.storm.task.TopologyContext;
-import backtype.storm.tuple.Tuple;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Map;
 
-import org.eclipse.jetty.server.session.HashSessionIdManager;
+import backtype.storm.task.TopologyContext;
+
+import com.intersys.bean.Account;
+import com.intersys.bolt.IAccountBolt;
+import com.intersys.topology.IngestionTopology;
+import com.intersys.util.IIngestionLogger;
 
 	// End imports 
 

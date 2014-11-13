@@ -37,11 +37,16 @@ public class IngestionHighLevelConsumer
   }
 
   public boolean hasNext() {
-	  return it.hasNext();
+	  try {
+		return it.hasNext();
+	  } catch (Exception e) { }
+	  return false;
   }
   
   public void close() {
 	  it.allDone();
+	  consumer.commitOffsets();
+	  consumer.shutdown();
   }
   
   private void setup(String groupId) {
@@ -75,6 +80,8 @@ public class IngestionHighLevelConsumer
 	  props.put("zookeeper.sync.time.ms", "200");
 	  props.put("auto.commit.enable", "true");
 	  props.put("auto.commit.interval.ms", "1000");
+	  props.put("socket.timeout.ms", "10000");
+	  props.put("consumer.timeout.ms", "1000");
 	  return new ConsumerConfig(props);
   }
 

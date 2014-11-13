@@ -2,13 +2,10 @@ package com.intersys.topology;
 
 	// Begin imports
 
-import com.gerken.gumbo.storm.TaskHook;
-	
-import com.intersys.spout.*;
-import com.intersys.bolt.*;
-import com.intersys.util.AlarmClock;
-import com.intersys.util.IngestionLogger;
-import com.intersys.util.IIngestionLogger;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
 
 import backtype.storm.Config;
 import backtype.storm.ILocalCluster;
@@ -21,17 +18,17 @@ import backtype.storm.generated.StormTopology;
 import backtype.storm.topology.BoltDeclarer;
 import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.tuple.Fields;
-import backtype.storm.utils.Utils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import com.intersys.bolt.AccountBolt;
+import com.intersys.bolt.ArchivalBolt;
+import com.intersys.bolt.ErrorLogBolt;
+import com.intersys.bolt.EventProcessorBolt;
+import com.intersys.bolt.NewAccountProcessorBolt;
+import com.intersys.bolt.RecordParserBolt;
+import com.intersys.spout.KafkaReaderSpout;
+import com.intersys.util.AlarmClock;
+import com.intersys.util.IIngestionLogger;
+import com.intersys.util.IngestionLogger;
 
 	// End imports
 	
@@ -67,9 +64,9 @@ public class IngestionTopology {
 
         config = loadConfig(target);
        	
-        if ("true".equals(config.get("storm.monitor.enabled").toString())) {
-        	TaskHook.registerTo(config);
-        }
+//        if ("true".equals(config.get("storm.monitor.enabled").toString())) {
+//        	TaskHook.registerTo(config);
+//        }
         
        	if (isRunLocally()) {
        		submitTopologyLocal();

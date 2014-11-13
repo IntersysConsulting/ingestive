@@ -13,11 +13,11 @@ public class BoltLogsWriter {
 		
 		IngestionProducer producer = new IngestionProducer("boltLogs", csBrokerList);
 		
-		for (int i = 0; i < 1000000; i++) {
+		for (int i = 0; i < 10000; i++) {
 			producer.send(generator.nextRecord());
 		}
 		
-		
+		producer.close();
 	}
 
 }

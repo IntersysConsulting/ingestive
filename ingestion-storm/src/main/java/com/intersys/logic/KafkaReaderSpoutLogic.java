@@ -46,10 +46,21 @@ public class KafkaReaderSpoutLogic implements Serializable {
         
         	}
         	
-       		Thread.sleep(10);
+        	if (consumer.hasNext()) {
+            	
+        		String record = consumer.next();
+            	
+            	RawRecord rawRecord = new RawRecord(record);
+            	
+            	spout.emitToRawRecords(rawRecord);
+            	spout.emitToArchiveCopies(rawRecord);
+        
+        	}
+        	
+//       		Thread.sleep(10);
 
-    	} catch (InterruptedException e) {
-    		log.finest("KafkaReaderSpoutLogic","nextTuple", e.toString());
+//    	} catch (InterruptedException e) {
+//    		log.finest("KafkaReaderSpoutLogic","nextTuple", e.toString());
         } catch (Exception e) {
        		log.severe("KafkaReaderSpoutLogic","nextTuple", e.toString());
         }
@@ -73,6 +84,7 @@ public class KafkaReaderSpoutLogic implements Serializable {
 
 			// Begin close() logic 
 
+    	consumer.close();
 
 			// End close() logic 
 

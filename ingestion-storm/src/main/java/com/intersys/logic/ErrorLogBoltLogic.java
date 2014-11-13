@@ -57,6 +57,7 @@ public class ErrorLogBoltLogic implements Serializable {
 
 			// Begin cleanup() logic 
 
+    	producer.close();
 
 			// End cleanup() logic 
 
