@@ -16,4 +16,4 @@ Records are read from a Kafka topic by the spout which writes them immediately t
 
 The topology therefore reads records from one topic and writes records to another.  A stand-alone class (also included) writes records to the topology's input topic.  Another included class reads and writes records from the topology's output topic.
 
-About the anotations above... The number after the bolt of spout name indicates the default parallelism hint (specificed in the configuration file).  The box overlaying a stream shows the stream name, the java type that describes the shape of the tuples on the stream and the individual field names declared on the stream.  The grouping for each stream is also shown.
+About the anotations above... The number after the bolt or spout name indicates the default parallelism hint (specificed in the configuration file).  The box overlaying a stream shows the stream name, the java type that describes the shape of the tuples on the stream and the individual field names declared on the stream.  The grouping for each stream is also shown.
