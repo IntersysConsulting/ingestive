@@ -4,7 +4,7 @@ import java.util.HashSet;
 
 public class DeDuper {
 
-    private HashSet<String> accounts;
+    private HashSet<String> accounts = new HashSet<String>();
 
     public DeDuper() {
 
