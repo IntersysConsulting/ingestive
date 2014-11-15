@@ -1,7 +1,7 @@
 ingestive
 =========
 
-An example of how to use Kafka and Storm to ingest events.  Illustrates a number of Kafka and Storm design patterns:
+A working Storm topology that reads events from and writes messages to a set of Kafka topics.  Illustrates a number of Kafka and Storm design patterns:
 
 1) Formal Kafka tier that hides topic implementation and configuration details from collaborating components
 
@@ -12,7 +12,7 @@ An example of how to use Kafka and Storm to ingest events.  Illustrates a number
 Here is an visual representation of the topology.
 
 ![topology](https://github.com/IntersysConsulting/ingestive/blob/master/ingestion-storm/IngestionTopology.png) 
-Records are read from a Kafka topic by the spout which writes them immediately to two streams, the main processing stream and a stream for record archival.  A parser bolt reads the records, parses then and sends two different objects on two streams, one for new account identification and one for further event processing. An account bolt filters out accounts that the bolt has seen before.  For demonstration purposes, the "leaf" bolts all write a log message to another Kafka topic.
+Records are read from a Kafka topic by the spout which writes them immediately to two streams, the main processing stream (RawRecords) and a stream for record archival (ArchiveCopies).  A parser bolt executes tuples (of shape RawRecord) from stream RawRecords, parses then and sends two different objects on two streams, one for new account identification (Accounts) and one to emulate further event processing (Events).  In the case of a parsing error, a tuple describing the error is written to stream Errors.   An account bolt filters out accounts that the bolt has seen before and emits tuples representing new accounts onto stream NewAccounts for subsequent processing by the New Account Processor bolt.  For demonstration purposes, the "leaf" bolts all write a log message to another Kafka topic.
 
 The topology therefore reads records from one topic and writes records to another.  A stand-alone class (also included) writes records to the topology's input topic.  Another included class reads and writes records from the topology's output topic.
 
