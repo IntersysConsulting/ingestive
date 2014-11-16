@@ -9,6 +9,8 @@ A working Storm topology that reads events from and writes messages to a set of 
 
 3) Stream beans that encapsulate knowledge about a storm stream: field names, types and order. 
 
+4) The notion of a Kafka topic as an independent component.  This component includes the producer and consumer that act as the component's public interfaces by hiding the topic congfiguration from users of the component.
+
 Here is an visual representation of the topology.
 
 ![topology](https://github.com/IntersysConsulting/ingestive/blob/master/ingestion-storm/IngestionTopology.png) 
