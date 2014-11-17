@@ -51,7 +51,7 @@ BoltLogsReader reads however many log records are written to Kafka topic boltLog
 
 Note that this reader will wait for about 30 seconds before starting to read from the topic and once there are no more records on the topic the reader will terminate.  This means you probably want to start it soon after starting the other two components and not any sooner. 
 ```
-   java -cp ingestion-storm/target/ingestion-storm-1.0.0-SNAPSHOT-jar-with-dependencies.jar com.intersys.kafka.driver.RawRecordsWriter localhost:2181
+   java -cp ingestion-storm/target/ingestion-storm-1.0.0-SNAPSHOT-jar-with-dependencies.jar com.intersys.kafka.driver.BoltLogsReader localhost:2181
 ```
 where localhost:2181 is the host/port for one of your ZooKeeper servers
 
