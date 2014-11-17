@@ -1,5 +1,4 @@
-ingestive
-=========
+#ingestive
 
 A working Storm topology that reads events from and writes messages to a set of Kafka topics.  Illustrates a number of Kafka and Storm design patterns:
 
@@ -19,3 +18,40 @@ Records are read from a Kafka topic by the spout which writes them immediately t
 The topology therefore reads records from one topic and writes records to another.  A stand-alone class (also included) writes records to the topology's input topic.  Another included class reads and writes records from the topology's output topic.
 
 About the anotations above... The number after the bolt or spout name indicates the default parallelism hint (specificed in the configuration file).  The box overlaying a stream shows the stream name, the java type that describes the shape of the tuples on the stream and the individual field names declared on the stream.  The grouping for each stream is also shown.
+
+###Build
+
+To build the topology, pull all mavenized projects from this repo, change directory to the root directory of the ingestion project (/ingestion) and enter
+```
+    mvn install
+```
+
+###Run
+
+Once the app is built ( look for ingestion-storm-1.0.0-SNAPSHOT-jar-with-dependencies.jar in /ingestion-storm/target/), you can invoke the three components:
+
+#####RawRecordsWriter
+
+RawRecordsWriter dumps 100K records onto the rawRecords topic and then terminates.
+```
+   java -cp ingestion-storm/target/ingestion-storm-1.0.0-SNAPSHOT-jar-with-dependencies.jar com.intersys.kafka.driver.RawRecordsWriter localhost:9092
+```
+where localhost:9092 is the host/port for one of your Kafka brokers
+
+#####IngestionTopology
+
+IngestionTopology configures the topology, submits the topology, waits a few minutes and then kills the topology.  The current configuration (see ingestion-storm/src/main/resources/dev.properties) sets topology.run.locally to true, resulting in execution in a LocalCluster.  The prod configuration properties file is set up to run on the server.
+```
+   java -cp ingestion-storm/target/ingestion-storm-1.0.0-SNAPSHOT-jar-with-dependencies.jar -Djava.util.logging.config.file=src/main/resources/logging.properties com.intersys.topology.IngestionTopology 
+```
+
+#####BoltLogsReader
+
+BoltLogsReader reads however many log records are written to Kafka topic boltLogs by the Storm topology's "leaf" bolts.  There will be a handful more than twice as many log records read than there were raw records written.  
+
+Note that this reader will wait for about 30 seconds before starting to read from the topic and once there are no more records on the topic the reader will terminate.  This means you probably want to start it soon after starting the other two components and not any sooner. 
+```
+   java -cp ingestion-storm/target/ingestion-storm-1.0.0-SNAPSHOT-jar-with-dependencies.jar com.intersys.kafka.driver.RawRecordsWriter localhost:2181
+```
+where localhost:2181 is the host/port for one of your ZooKeeper servers
+
